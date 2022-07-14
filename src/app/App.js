@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import api from "../api";
-import User from "./components/user";
+import Users from "./components/users";
 import SearchStatus from "./components/searchStatus";
 
 const App = () => {
@@ -9,6 +9,7 @@ const App = () => {
   const handleDelete = (userId) => {
     setUsers(users.filter((user) => user._id !== userId));
   };
+
   const handleToggleBookMark = (id) => {
     setUsers(
       users.map((user) => {
@@ -20,35 +21,19 @@ const App = () => {
       })
     );
   };
+
   return (
-    <div>
-      <SearchStatus length={users.length} />
-      {users.length > 0 && (
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Имя</th>
-              <th scope="col">Качества</th>
-              <th scope="col">Профессия</th>
-              <th scope="col">Встретился, раз</th>
-              <th scope="col">Оценка</th>
-              <th scope="col">Избранное</th>
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <User
-                key={user._id}
-                {...user}
-                onDelete={handleDelete}
-                onBookMark={handleToggleBookMark}
-              />
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+    <>
+      {<SearchStatus length={users.length} />}
+      {
+        <Users
+          onDelete={handleDelete}
+          onBookMark={handleToggleBookMark}
+          users={users}
+        />
+      }
+    </>
   );
 };
+
 export default App;
