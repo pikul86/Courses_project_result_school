@@ -13,9 +13,15 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-    indent: ["error", "tab"],
+    indent: ["error", 4, { ignoredNodes: ["ConditionalExpression"] }],
     semi: [2, "always"],
-    "space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": [
+      "error",
+      {
+        anonymous: "never",
+        named: "always",
+      },
+    ],
     quotes: ["error", "double", { allowTemplateLiterals: true }],
   },
 };
