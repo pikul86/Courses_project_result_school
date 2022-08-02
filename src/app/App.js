@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import api from "../api";
+import React, { useState, useEffect } from "react";
 import Users from "./components/users";
+import api from "./api";
 
-const App = () => {
-    const [users, setUsers] = useState(api.users.fetchAll());
+function App() {
+    const [users, setUsers] = useState();
+
+    useEffect(() => {
+        api.users.fetchAll().then((data) => setUsers(data));
+    }, []);
 
     const handleDelete = (userId) => {
         setUsers(users.filter((user) => user._id !== userId));
@@ -13,23 +17,27 @@ const App = () => {
         setUsers(
             users.map((user) => {
                 if (user._id === id) {
-                    user.bookmark = !user.bookmark;
+                    return { ...user, bookmark: !user.bookmark };
                 }
-
                 return user;
             })
         );
+        console.log(id);
     };
 
     return (
         <div>
-            <Users
-                onDelete={handleDelete}
-                onBookMark={handleToggleBookMark}
-                users={users}
-            />
+            {users ? (
+                <Users
+                    onDelete={handleDelete}
+                    onToggleBookMark={handleToggleBookMark}
+                    users={users}
+                />
+            ) : (
+                ""
+            )}
         </div>
     );
-};
+}
 
 export default App;
